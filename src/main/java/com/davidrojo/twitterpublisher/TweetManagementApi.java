@@ -27,7 +27,7 @@ public class TweetManagementApi {
 		}
 
 		// Post a tweet
-		Status status = twitter.updateStatus("Test from java app");
+		Status status = twitter.updateStatus("Test from java app 3");
 		logger.info("Successfully updated the status to [" + status.getText() + "].");
 	}
 }
