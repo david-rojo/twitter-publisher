@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +16,9 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.UploadedMedia;
 
-public class TweetLinkWithRemoteImage {
+public class TweetText {
 
-	private static Logger logger = LoggerFactory.getLogger(TweetLinkWithRemoteImage.class);
+	private static Logger logger = LoggerFactory.getLogger(TweetText.class);
 	
 	private static Twitter twitter = TwitterFactory.getSingleton();
 
@@ -26,30 +27,18 @@ public class TweetLinkWithRemoteImage {
 
 		try {
 			// post a tweet link with image
-			String statusMessage = "Project logos";
-			
-			String image1Location = "https://davidrojo.eu/images/tfm/1.jpg";
-			UploadedMedia media1 = uploadImage("image1.jpg", image1Location);
-			String image2Location = "https://davidrojo.eu/images/tfm/2.jpg";
-			UploadedMedia media2 = uploadImage("image2.jpg", image2Location);
+			String statusMessage = "test twitter api";
 
-			long[] mediaIds = new long[2];
-			
-			mediaIds[0] = media1.getMediaId();
-			mediaIds[1] = media2.getMediaId();
-			
 			StatusUpdate statusUpdate = new StatusUpdate(statusMessage);
-			statusUpdate.setMediaIds(mediaIds);
 
 			Status status = twitter.updateStatus(statusUpdate);
+			Long tweetId = status.getId();
+			Date publishedAt = status.getCreatedAt();
+			String message = statusUpdate.getStatus();
+			String user = status.getUser().getScreenName();
+			String tweetUrl = "https://twitter.com/" + user + "/status/" + tweetId;
 			logger.info("Successfully updated the status to [" + status.getText() + "].");
 
-		} catch (MalformedURLException e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
